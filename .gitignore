@@ -1,0 +1,12 @@
+# Entorno virtual
+venv/
+__pycache__/
+
+# Base de datos
+instance/
+
+# Variables de entorno
+.env
+
+# Archivos del sistema
+.DS_Store
