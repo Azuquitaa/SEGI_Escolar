@@ -12,11 +12,15 @@ def create_app():
     # rutas
     from routes.escuelas import escuelas_bp
     from routes.cursos import cursos_bp
-    # from routes.alumnos import alumnos_bp
+    from routes.alumnos import alumnos_bp
+    from routes.materias import materias_bp
+    from routes.actividades import actividades_bp
 
     app.register_blueprint(escuelas_bp, url_prefix="/escuelas")
     app.register_blueprint(cursos_bp, url_prefix="/cursos")
-    # app.register_blueprint(alumnos_bp, url_prefix="/alumnos")
+    app.register_blueprint(alumnos_bp, url_prefix="/alumnos")
+    app.register_blueprint(materias_bp, url_prefix="/materias")
+    app.register_blueprint(actividades_bp, url_prefix="/actividades")
 
     @app.route("/")
     def index():

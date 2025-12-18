@@ -1,4 +1,5 @@
 from extensions import db
+from models.curso_materia import curso_materia
 
 class Curso(db.Model):
     __tablename__ = "cursos"
@@ -12,6 +13,20 @@ class Curso(db.Model):
         db.Integer,
         db.ForeignKey("escuelas.id"),
         nullable=False
+    )
+    # relacion de uno a muchos, un curso tiene muchos alumnos
+    alumnos = db.relationship(
+        "Alumno",
+        backref="curso",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
+    # relacion muchos a muchos.
+    materias = db.relationship(
+        "Materia",
+        secondary=curso_materia,
+        back_populates="cursos"
     )
 
     def __repr__(self):

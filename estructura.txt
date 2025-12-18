@@ -1,0 +1,27 @@
+Diseño de relaciones (antes de escribir código)
+
+Relaciones reales del sistema:
+
+    Una Escuela tiene muchas Materias
+
+    Una Materia pertenece a una Escuela
+
+    Un Curso tiene muchas Materias
+
+    Una Materia puede dictarse en muchos Cursos
+
+    Un Curso tiene muchos Alumnos
+
+    Una Escuela tiene muchos Cursos
+    
+Una Actividad pertenece a:
+
+    una Materia
+
+    un Curso
+
+Por lo tanto:
+
+Curso ↔ Materia = muchos a muchos
+
+Actividad une Curso + Materia
