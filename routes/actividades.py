@@ -4,6 +4,7 @@ from extensions import db
 from models.actividad import Actividad
 from models.curso import Curso
 from models.materia import Materia
+from models.periodo import PeriodoEvaluativo
 
 actividades_bp = Blueprint("actividades", __name__)
 
@@ -17,8 +18,10 @@ def listar_actividades():
             "id": a.id,
             "titulo": a.titulo,
             "tipo": a.tipo,
-            "fecha": a.fecha.isoformat(),
+            "fecha_inicio": a.fecha_inicio,
+            "fecha_final": a.fecha_final,
             "puntaje_max": a.puntaje_max,
+            "observaciones":a.observaciones,
             "materia": a.materia.nombre,
             "curso": f"{a.curso.anio}°{a.curso.division}"
         }
@@ -29,21 +32,33 @@ def listar_actividades():
 # POST /actividades
 @actividades_bp.route("/", methods=["POST"])
 def crear_actividad():
+
     data = request.get_json()
 
-    curso = Curso.query.get(data["curso_id"])
-    materia = Materia.query.get(data["materia_id"])
+    periodo = PeriodoEvaluativo.query.get(data["periodo_id"])
+    if not periodo:
+        return jsonify({"error": "Periodo no encontrado"}), 404
+    
+    fecha_inicio = datetime.strptime(
+        data["fecha_inicio"], "%Y-%m-%d"
+    ).date()
 
-    if not curso or not materia:
-        return jsonify({"error": "Curso o materia no encontrado"}), 404
+    fecha_final = None
+    if data.get("fecha_final"):
+        fecha_final = datetime.strptime(
+            data["fecha_final"], "%Y-%m-%d"
+        ).date()
 
     actividad = Actividad(
         titulo=data["titulo"],
         tipo=data["tipo"],
-        fecha=datetime.strptime(data["fecha"], "%Y-%m-%d").date(),
+        fecha_inicio=fecha_inicio,
+        fecha_final=fecha_final,
         puntaje_max=data["puntaje_max"],
-        curso_id=curso.id,
-        materia_id=materia.id
+        observaciones=data.get("observaciones"),
+        materia_id=data["materia_id"],
+        curso_id=data["curso_id"],
+        periodo_id = periodo.id
     )
 
     db.session.add(actividad)
