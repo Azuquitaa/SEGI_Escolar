@@ -25,17 +25,27 @@ def listar_escuelas():
 #     "nombre":"Escuela Normal",
 #     "nivel":"Secundaria"
 # }
-
+# creacion
 @escuelas_bp.route("/", methods=["POST"])
 def crear_escuela():
     data = request.json
 
-    nueva_escuela = Escuela(
-        nombre=data["nombre"],
-        nivel=data["nivel"]
+    escuela = Escuela(
+        nombre=data["nombre"].strip().title(),
+        nivel=data["nivel"].strip().title()
     )
 
-    db.session.add(nueva_escuela)
+    db.session.add(escuela)
     db.session.commit()
 
     return jsonify({"mensaje": "Escuela creada correctamente"}), 201
+
+# actualizacion
+@escuelas_bp.route("/<int:id>", methods=["PUT"])
+def editar_escuela(id):
+    escuela = Escuela.query.get_or_404(id)
+    data = request.json
+    escuela.nombre = data["nombre"].strip().title()
+    escuela.nivel = data["nivel"]
+    db.session.commit()
+    return jsonify({"msg": "Escuela actualizada"}), 200

@@ -10,12 +10,14 @@ class Alumno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(10), nullable=False)
     apellido = db.Column(db.String(10), nullable=False)
+    dni = db.Column(db.String(10), nullable=False)
     # valores: "activo", "egresado", "libre","intensificando"
     estado = db.Column(
         db.String(20),
         nullable=False,
         default="activo"
     )
+    activo = db.Column(db.Boolean, default=True)
 
     # foreign key, que une un alumno con un curso
     curso_id = db.Column(

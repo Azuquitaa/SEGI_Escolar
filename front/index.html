@@ -4,17 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Escolar</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Sistema de Gestión Escolar</h1>
-    
-    <select id="alumnoSelect"></select>
-    <button onclick="cargarEstado()">Ver estado</button>
 
-    <div id="resultado"></div>
+    <div class="layout">
 
+    <!-- Menú lateral -->
+    <aside class="sidebar">
+        <h2>Menú</h2>
+        <ul>
+            <li class="menu-item active" data-section="inicio">Inicio</li>
+            <li class="menu-item" data-section="actividades">Actividades</li>
+        </ul>
+    </aside>
 
+    <!-- Contenido principal -->
+    <main class="content">
+        <!-- Sección Inicio -->
+        <div id="inicio-section" class="content-section">
+            <h1>Inicio</h1>
 
-    <script src="js/app.js"></script>
+            <!-- Escuelas -->
+            <section>
+                <label>Escuela</label>
+                <select id="escuelaSelect">
+                    <option>No hay escuelas agregadas</option>
+                </select>
+
+                <button id="crearEscuela" type="button">Crear</button>
+                <button id="editarEscuela" disabled type="button">Editar</button>
+            </section>
+
+            <!-- Cursos -->
+            <section>
+                <label>Curso</label>
+                <select id="cursoSelect" disabled>
+                    <option>Seleccione una escuela</option>
+                </select>
+
+                <button id="crearCurso" disabled type="button">Crear</button>
+                <button id="editarCurso" disabled type="button">Editar</button>
+            </section>
+
+            <!-- Tabla alumnos -->
+            <section id="alumnosSection" style="display:none;">
+                <h2>Alumnos</h2>
+                <button id="crearAlumno" disabled type="button">Crear</button>
+                <button id="editarAlumno" disabled type="button">Editar</button>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Curso</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alumnosTable">
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- Sección Actividades -->
+        <div id="actividades-section" class="content-section" style="display:none;">
+            <h1>Actividades</h1>
+            
+            <div class="filtros-actividades">
+                <section>
+                    <label>Escuela</label>
+                    <select id="actividad-escuelaSelect">
+                        <option>Cargando escuelas...</option>
+                    </select>
+                </section>
+
+                <section>
+                    <label>Curso</label>
+                    <select id="actividad-cursoSelect" disabled>
+                        <option>Seleccione una escuela primero</option>
+                    </select>
+                </section>
+
+                <section>
+                    <label>Materia</label>
+                    <select id="actividad-materiaSelect">
+                        <option>Cargando materias...</option>
+                    </select>
+                    <button id="crearMateria" disabled type="button">Crear</button>
+                <button id="editarMateria" disabled type="button">Editar</button>
+                </section>
+
+                <button id="crearActividad" type="button" disabled>Crear Nueva Actividad</button>
+            </div>
+
+            <!-- Lista de actividades -->
+            <section id="lista-actividades">
+                <h2>Actividades del Curso</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Fecha</th>
+                            <th>Materia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-actividades">
+                        <tr>
+                            <td colspan="5">Seleccione un curso para ver las actividades</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Formulario para crear/editar actividad -->
+            <div id="formulario-actividad" class="hidden">
+                <h3>Nueva Actividad</h3>
+                <form id="formActividad">
+                    <div>
+                        <label>Nombre:</label>
+                        <input type="text" id="actividad-nombre" required>
+                    </div>
+                    <div>
+                        <label>Tipo:</label>
+                        <select id="actividad-tipo" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="examen">Examen</option>
+                            <option value="trabajo_practico">Trabajo Práctico</option>
+                            <option value="proyecto">Proyecto</option>
+                            <option value="tarea">Tarea</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Fecha:</label>
+                        <input type="date" id="actividad-fecha" required>
+                    </div>
+                    <div>
+                        <label>Descripción:</label>
+                        <textarea id="actividad-descripcion" rows="4"></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit">Guardar</button>
+                        <button type="button" id="cancelar-actividad">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- modal generico  -->
+<div id="modal" class="modal hidden">
+    <div class="modal-content">
+        <h2 id="modalTitulo"></h2>
+        <div id="modalCampos"></div>
+        <div class="modal-actions">
+            <button id="modalGuardar" type="button">Guardar</button>
+            <button id="modalCancelar" type="button">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

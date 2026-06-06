@@ -6,9 +6,20 @@ from extensions import db
 # se fabrica la app.. no se crea
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, resources={
+        r"/*": {
+            "origins": ["http://127.0.0.1:5500", "http://localhost:5500"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        }
+    })
     app.config.from_object("config.Config")
 
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+    app.config['JSON_SORT_KEYS'] = False
+
+    app.url_map.strict_slashes = False
     db.init_app(app)
 
     # rutas
@@ -41,4 +52,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-    app.run(debug=True)
+    app.run(debug=True, port=5000, host='127.0.0.1')
